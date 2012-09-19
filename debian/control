@@ -1,0 +1,15 @@
+Source: deb-docshot
+Section: utils
+Priority: optional
+Maintainer: Paul Tagliamonte <paultag@debian.org>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.3
+Homepage: http://pault.ag/
+
+Package: deb-docshot
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, phantomjs
+Description: script to generate thumbnails from html documentation
+ Generate shiny images from static .HTML pages for fun and profit!
+ .
+ This package rocks.
