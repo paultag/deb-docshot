@@ -1,2 +1,2 @@
-bin/bin/deb-docshot          usr/bin
+bin/deb-docshot              usr/bin
 bin/docshot-capture          usr/bin
