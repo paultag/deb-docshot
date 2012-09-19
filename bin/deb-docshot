@@ -3,9 +3,15 @@
 # under the terms of the Expat license.
 
 DEB=$1
+DOCSHOT=docshot-capture
+DOCSHOTDIR=${POPDIR}/docshot/$(date +%y%m%d%H%M)/
 
-if [ -e "docshot" ]; then
-    echo "./docshot exists. Please remove it."
+if [ -f ./${DOCSHOT} ] ; then
+    DOCSHOT=$(pwd)/${DOCSHOT}
+fi
+
+if [ -e $DOCSHOTDIR ]; then
+    echo "$DOCSHOTDIR exists. Please remove it."
     exit 3
 fi
 
@@ -35,13 +41,17 @@ cd $WORKDIR
 dpkg-deb -x $DEB tmp
 cd tmp
 
-FILES=$(find . -type f -name "*html")
+FILES=$(find "$WORKDIR/tmp" -type f -name "*html")
 for x in $FILES; do
-    docshot-capture file://$x ${x}.docshot.png
+    $DOCSHOT file://$x ${x}.docshot.png
+    if [ $? != 0 ] ; then
+        echo "$DOCSHOT file://$x returned an error"
+        exit $?
+    fi
 done
 
-mkdir ${POPDIR}/docshot
-rsync -Ra $(find . -type f -name "*.docshot.png") ${POPDIR}/docshot
+mkdir DOCSHOTDIR
+rsync -Ra $(find . -type f -name "*.docshot.png") $DOCSHOTDIR
 
 cd $POPDIR
 rm -rf $WORKDIR
