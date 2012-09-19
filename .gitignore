@@ -1,1 +1,5 @@
 *swp
+debian/deb-docshot.debhelper.log
+debian/deb-docshot.substvars
+debian/deb-docshot/
+debian/files
