@@ -1,0 +1,32 @@
+#!/bin/sh
+
+DEB=$1
+
+if [ "x$DEB" = "x" ]; then
+    echo "No .deb provided."
+    exit 1
+fi
+
+MIME=$(file ${DEB} --mime-type -b)
+
+if [ "x$MIME" != "xapplication/x-debian-package" ]; then
+    echo "$DEB is not a dpkg file. It's a $MIME"
+    exit 2
+fi
+
+POPDIR=$(pwd)
+WORKDIR=$(mktemp -d)
+
+cp $DEB $WORKDIR
+cd $WORKDIR
+
+dpkg-deb -x $DEB tmp
+cd tmp
+
+FILES=$(find . -type f -name "*html")
+for x in $FILES; do
+    docshot-capture file://$x ${x}.png
+done
+
+cd $POPDIR
+rm -rf $WORKDIR
